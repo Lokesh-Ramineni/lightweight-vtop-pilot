@@ -8,7 +8,8 @@ config/.env
 config/session.json
 
 # Temporary assets
-captcha/captcha.png
+captcha/*
+!captcha/.gitkeep
 
 # Pycache and build artifacts
 __pycache__/
