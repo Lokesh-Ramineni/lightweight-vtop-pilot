@@ -16,7 +16,10 @@ __pycache__/
 *$py.class
 
 #cache content
-data/cache
+# Ignore everything in the cache folder...
+data/cache/*
+# ...but do NOT ignore the .gitkeep file
+!data/cache/.gitkeep
 
 # IDE settings
 .idea/
