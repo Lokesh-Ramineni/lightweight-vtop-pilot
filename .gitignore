@@ -1,0 +1,22 @@
+# Virtual environment
+.venv/
+venv/
+ENV/
+
+# Secrets and sessions
+config/.env
+config/session.json
+
+# Temporary assets
+captcha/captcha.png
+
+# Pycache and build artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+
+#cache content
+data/cache
+
+# IDE settings
+.idea/
