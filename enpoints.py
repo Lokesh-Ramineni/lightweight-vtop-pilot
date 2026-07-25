@@ -16,3 +16,6 @@ OTP="/vtop/login/error"
 VALIDATE_OTP="/vtop/validateSecurityOtp"
 
 CONTENT="/vtop/content"
+
+TIME_TABLE_PRE="/vtop/academics/common/StudentTimeTable"
+PROCESS_TABLE="/vtop/processViewTimeTable"
