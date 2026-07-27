@@ -6,6 +6,8 @@ ENV/
 # Secrets and sessions
 config/.env
 config/session.json
+config/info.json
+config/attendance.json
 
 # Temporary assets
 captcha/*

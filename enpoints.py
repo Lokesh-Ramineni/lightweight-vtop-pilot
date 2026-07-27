@@ -19,3 +19,6 @@ CONTENT="/vtop/content"
 
 TIME_TABLE_PRE="/vtop/academics/common/StudentTimeTable"
 PROCESS_TABLE="/vtop/processViewTimeTable"
+
+ATTENDANCE_PRE="/vtop/academics/common/StudentAttendance"
+PROCESS_ATTENDANCE="/vtop/processViewStudentAttendance"
