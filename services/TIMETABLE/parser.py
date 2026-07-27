@@ -20,9 +20,6 @@ def fetching_timetable(html_src):
 
     table_rows = table_time.find_all("tr")
 
-    # ----------------------------
-    # COURSE TABLE
-    # ----------------------------
     trs = table.find_all("tr")
 
     for tr in trs[2:-2]:
@@ -81,9 +78,6 @@ def fetching_timetable(html_src):
 
 def add_schedule(data, table_rows):
 
-    # ----------------------------
-    # THEORY TIME HEADER
-    # ----------------------------
     theory_start = [
         td.get_text(strip=True)
         for td in table_rows[0].find_all("td")[2:]
@@ -94,9 +88,6 @@ def add_schedule(data, table_rows):
         for td in table_rows[1].find_all("td")[1:]
     ]
 
-    # ----------------------------
-    # LAB TIME HEADER
-    # ----------------------------
     lab_start = [
         td.get_text(strip=True)
         for td in table_rows[2].find_all("td")[2:]
@@ -107,9 +98,6 @@ def add_schedule(data, table_rows):
         for td in table_rows[3].find_all("td")[1:]
     ]
 
-    # ----------------------------
-    # DAY ROWS
-    # ----------------------------
     days = [
         ("Tuesday", table_rows[4], table_rows[5]),
         ("Wednesday", table_rows[6], table_rows[7]),
@@ -128,12 +116,12 @@ def add_schedule(data, table_rows):
 
             if is_lab:
                 row = lab_row
-                cells = row.find_all("td")[1:]      # LAB row has no DAY column
+                cells = row.find_all("td")[1:]      
                 start_times = lab_start
                 end_times = lab_end
             else:
                 row = theory_row
-                cells = row.find_all("td")[2:]      # THEORY row has DAY + THEORY
+                cells = row.find_all("td")[2:]      
                 start_times = theory_start
                 end_times = theory_end
 
