@@ -8,7 +8,9 @@ config/.env
 config/session.json
 config/info.json
 config/attendance.json
-
+config/sem_code.json
+config/student_info.json
+config/exam.json
 # Temporary assets
 captcha/*
 !captcha/.gitkeep

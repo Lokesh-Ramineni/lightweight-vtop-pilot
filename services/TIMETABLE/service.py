@@ -11,11 +11,11 @@ async def time_table(client,vtop_engine,data1,data2):
     ck.set("JSESSIONID", vtop_engine)
 
     r=await client.post(TIME_TABLE_PRE,cookies=ck,data=data1)
-    print(client.cookies)
-    print(r.status_code)
+    # print(client.cookies)
+    # print(r.status_code)
     s=await client.post(PROCESS_TABLE,data=data2,cookies=ck)
-    print(s.url)
-    print(s.status_code)
+    # print(s.url)
+    # print(s.status_code)
     fetching_timetable(s.text)
-    with open(timetable_path/"timetable.html","wb") as f:
-        f.write(s.content)
+    # with open(timetable_path/"timetable.html","wb") as f:
+    #     f.write(s.content)
