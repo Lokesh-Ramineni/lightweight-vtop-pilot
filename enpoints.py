@@ -22,3 +22,9 @@ PROCESS_TABLE="/vtop/processViewTimeTable"
 
 ATTENDANCE_PRE="/vtop/academics/common/StudentAttendance"
 PROCESS_ATTENDANCE="/vtop/processViewStudentAttendance"
+
+OUTING="vtop/hostel/saveOutingForm"
+
+STUDENT_DETAILS="vtop/studentsRecord/StudentProfileAllView"
+
+EXAM_SCHEDULE="/vtop/examinations/doSearchExamScheduleForStudent"

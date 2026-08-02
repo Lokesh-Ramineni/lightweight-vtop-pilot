@@ -11,11 +11,9 @@ async def attendance_table(client,vtop_engine,data1,data2):
     ck.set("JSESSIONID", vtop_engine)
 
     r=await client.post(ATTENDANCE_PRE,cookies=ck,data=data1)
-    print(client.cookies)
-    print(r.status_code)
+
     s=await client.post(PROCESS_ATTENDANCE,data=data2,cookies=ck)
-    print(s.url)
-    print(s.status_code)
+
     await fetching_attendance(s.text,data1["_csrf"],client,vtop_engine)
-    with open(timetable_path/"attendance.html","wb") as f:
-        f.write(s.content)
+    # with open(timetable_path/"attendance.html","wb") as f:
+    #     f.write(s.content)

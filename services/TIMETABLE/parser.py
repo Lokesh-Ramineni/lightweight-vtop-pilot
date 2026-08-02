@@ -9,7 +9,7 @@ info = ROOT / "config" / "info.json"
 def fetching_timetable(html_src):
     data = []
 
-    soup = BeautifulSoup(html_src, "html.parser")
+    soup = BeautifulSoup(html_src, "lxml")
 
     table = soup.find("table", class_="table")
     table_time = soup.find("table", id="timeTableStyle")
@@ -72,9 +72,6 @@ def fetching_timetable(html_src):
 
     with open(info, "w") as f:
         json.dump(data, f, indent=4)
-
-    print("Saved to", info)
-
 
 def add_schedule(data, table_rows):
 
@@ -144,9 +141,9 @@ def add_schedule(data, table_rows):
                         })
 
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
 
-    with open("timetable.html", encoding="utf-8") as f:
-        html = f.read()
+#     with open("timetable.html", encoding="utf-8") as f:
+#         html = f.read()
 
-    fetching_timetable(html)
+#     fetching_timetable(html)
