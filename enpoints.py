@@ -28,3 +28,5 @@ OUTING="vtop/hostel/saveOutingForm"
 STUDENT_DETAILS="vtop/studentsRecord/StudentProfileAllView"
 
 EXAM_SCHEDULE="/vtop/examinations/doSearchExamScheduleForStudent"
+
+BIOMETRIC_INFO="/vtop/getStudBioHistory"
