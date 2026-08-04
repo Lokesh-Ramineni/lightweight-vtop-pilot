@@ -11,6 +11,7 @@ from services.ATTENDANCE.service import attendance_table
 from services.EXAMSCHEDULE.service import get_schedule
 from services.semesters import semester_code
 from services.DETAILS.service import get_details
+from services.BIOMETRIC.service import get_biometric
 import time
 import httpx
 import json
@@ -62,13 +63,13 @@ class Main:
             flat_map.update(item)
         semester_names = list(flat_map.keys())
 
-        # 2. Compact CLI Presentation (No extra print statements or newlines)
+
         print("Choose Semester:")
         for index, name in enumerate(semester_names, start=1):
-            # strip() removes accidental whitespace padding from strings
+
             print(f" {index}. {name.strip()}")
 
-        # 3. Direct Input line
+
         while True:
             try:
                 choice = int(input("Enter the number: "))
@@ -117,13 +118,16 @@ class Main:
             "semesterSubId": flat_map[opted],
             "_csrf":self.csrf
         }
+        self.data5={
+            "_csrf": self.csrf,
+            "fromDate": '',
+            "authorizedID": str(self.username),
+            "x": formatdate(timeval=None, localtime=False, usegmt=True)
+        }
 
         return self
 
     async def main(self):
-
-        await get_details(self.client,self.cookie,self.data1)
-        await get_schedule(self.client,self.cookie,self.data4)
 
         await asyncio.gather(
             time_table(
@@ -138,13 +142,15 @@ class Main:
                 self.data1,
                 self.data2
             ),
+            get_details(self.client,self.cookie,self.data1),
+            get_schedule(self.client,self.cookie,self.data4),
+            get_biometric(self.client,self.cookie,self.data5)
             # semester_code(
             #     self.client,
             #     self.cookie,
             #     self.data1
             # )
         )
-        # await semester_code(self.client,self.cookie,self.data1)
 async def runner():
     start=time.time()
     m = await Main.create()
