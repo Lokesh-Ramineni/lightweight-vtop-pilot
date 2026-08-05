@@ -30,3 +30,5 @@ STUDENT_DETAILS="vtop/studentsRecord/StudentProfileAllView"
 EXAM_SCHEDULE="/vtop/examinations/doSearchExamScheduleForStudent"
 
 BIOMETRIC_INFO="/vtop/getStudBioHistory"
+
+MARKS_INFO="/vtop/examinations/doStudentMarkView"
