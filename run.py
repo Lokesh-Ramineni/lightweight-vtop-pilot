@@ -12,6 +12,7 @@ from services.EXAMSCHEDULE.service import get_schedule
 from services.semesters import semester_code
 from services.DETAILS.service import get_details
 from services.BIOMETRIC.service import get_biometric
+from services.MARKS.service import get_marks
 import time
 import httpx
 import json
@@ -124,7 +125,6 @@ class Main:
             "authorizedID": str(self.username),
             "x": formatdate(timeval=None, localtime=False, usegmt=True)
         }
-
         return self
 
     async def main(self):
@@ -144,7 +144,8 @@ class Main:
             ),
             get_details(self.client,self.cookie,self.data1),
             get_schedule(self.client,self.cookie,self.data4),
-            get_biometric(self.client,self.cookie,self.data5)
+            get_biometric(self.client,self.cookie,self.data5),
+            get_marks(self.client,self.cookie,self.data4)
             # semester_code(
             #     self.client,
             #     self.cookie,
