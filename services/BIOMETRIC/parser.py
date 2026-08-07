@@ -9,6 +9,7 @@ def fetch_bio(html_src):
     table=soup.find("table")
     if not table:
         print("No data found")
+        return
     data=[]
     total_entries=table.find_all('tr')[-1].find_all("td")[0].get_text(strip=True)
     data.append({
