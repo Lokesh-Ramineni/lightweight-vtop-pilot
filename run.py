@@ -12,6 +12,7 @@ from services.EXAMSCHEDULE.service import get_schedule
 from services.semesters import semester_code
 from services.DETAILS.service import get_details
 from services.BIOMETRIC.service import get_biometric
+from services.GRADES.service import get_grades
 from services.MARKS.service import get_marks
 import time
 import httpx
@@ -23,11 +24,12 @@ load_dotenv(env_path)
 
 ROOT = Path(__file__).parent
 sem_data = ROOT / "data" /"cache"/ "sem.html"
-weekend=sem_data = ROOT / "data" /"cache"/ "weekend.html"
+weekend= ROOT / "data" /"cache"/ "weekend.html"
 sem_codes=ROOT / "config"/ "sem_code.json"
 details=ROOT/"config"/"student_info.json"
-with open(sem_codes,"r") as f:
-    s=json.load(f)
+
+with open(sem_codes, "r") as f:
+    s = json.load(f)
 
 with open(details,"r") as f:
     d=json.load(f)
@@ -45,12 +47,18 @@ class Main:
         self.parent=d["student_details"]["parent_mobile"]
         self.app=d["student_details"]["application_number"]
 
+        self.semester_sub_id=None
+
+
         self.client = None
         self.csrf = None
         self.cookie = None
 
         self.data1 = None
         self.data2 = None
+        self.data3 = None
+        self.data4 = None
+        self.data5 = None
 
     @classmethod
     async def create(cls):
@@ -75,7 +83,7 @@ class Main:
             try:
                 choice = int(input("Enter the number: "))
                 if 1 <= choice <= len(semester_names):
-                    opted = semester_names[choice - 1]
+                    self.semester_sub_id= flat_map[semester_names[choice - 1]]
                     break
                 print("Invalid choice.")
             except ValueError:
@@ -91,7 +99,7 @@ class Main:
 
         self.data2 = {
             "_csrf": self.csrf,
-            "semesterSubId": flat_map[opted],
+            "semesterSubId": self.semester_sub_id,
             "authorizedID": str(self.username),
             "x": formatdate(timeval=None, localtime=False, usegmt=True)
         }
@@ -116,18 +124,20 @@ class Main:
 
         self.data4={
             "authorizedID":self.username,
-            "semesterSubId": flat_map[opted],
+            "semesterSubId": self.semester_sub_id,
             "_csrf":self.csrf
         }
         self.data5={
             "_csrf": self.csrf,
-            "fromDate": '',
+            "fromDate": '01/08/2026',
             "authorizedID": str(self.username),
             "x": formatdate(timeval=None, localtime=False, usegmt=True)
         }
         return self
 
     async def main(self):
+        # c=self.create()
+
 
         await asyncio.gather(
             time_table(
@@ -142,10 +152,34 @@ class Main:
                 self.data1,
                 self.data2
             ),
-            get_details(self.client,self.cookie,self.data1),
-            get_schedule(self.client,self.cookie,self.data4),
-            get_biometric(self.client,self.cookie,self.data5),
-            get_marks(self.client,self.cookie,self.data4)
+            get_details(
+                self.client,
+                self.cookie,
+                self.data1
+            ),
+            get_schedule(
+                self.client,
+                self.cookie,
+                self.data4
+            ),
+            get_biometric(
+                self.client,
+                self.cookie,
+                self.data5
+            ),
+            get_marks(
+                self.client,
+                self.cookie
+                ,self.data4
+            ),
+            get_grades(
+                self.client,
+                self.cookie,
+                self.data4,
+                self.csrf,
+                self.semester_sub_id,
+                self.username
+            ),
             # semester_code(
             #     self.client,
             #     self.cookie,
@@ -155,6 +189,7 @@ class Main:
 async def runner():
     start=time.time()
     m = await Main.create()
+
     await m.main()
     end=time.time()
     tot=end-start
