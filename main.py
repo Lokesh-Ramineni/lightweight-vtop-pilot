@@ -123,13 +123,14 @@ class VtopClient:
                     otp_log = await get_otp_pg(client)
                     print("Otp detected")
                     otp_csrf_token = get_csrf_token(otp_log.text)
+                    print("csrf token")
                     get_otp = OTPFetcher()
                     val = get_otp.fetch_latest_otp(60)
                     data = {
                         "otpCode": val,
                         "_csrf": otp_csrf_token
                     }
-                    # print(f'Fetched Otp: {val}')
+                    print(f'Fetched Otp: {val}')
 
                     cont = await validate(client, data)
                     print(cont.status_code)
@@ -160,12 +161,9 @@ class VtopClient:
 
 
 async def start():
-    # Instantiate your class
     bot = VtopClient()
-    # Await your asynchronous flow
     await bot.run_flow()
 
 
 if __name__ == "__main__":
-    # Run the async loop
     asyncio.run(start())
