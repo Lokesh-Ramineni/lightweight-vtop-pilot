@@ -43,6 +43,7 @@ class OTPFetcher:
             self.mail.select("INBOX")
 
         except imaplib.IMAP4.error as e:
+            print(APP_PASSWORD,EMAIL)
             raise RuntimeError(f"Failed to login to Gmail: {e}")
 
     def __enter__(self):
