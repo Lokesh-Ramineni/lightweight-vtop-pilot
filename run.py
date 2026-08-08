@@ -14,6 +14,7 @@ from services.DETAILS.service import get_details
 from services.BIOMETRIC.service import get_biometric
 from services.GRADES.service import get_grades
 from services.MARKS.service import get_marks
+from services.GRADE_HISTORY.service import get_history
 import time
 import httpx
 import json
@@ -136,7 +137,6 @@ class Main:
         return self
 
     async def main(self):
-        # c=self.create()
 
 
         await asyncio.gather(
@@ -180,16 +180,20 @@ class Main:
                 self.semester_sub_id,
                 self.username
             ),
-            # semester_code(
-            #     self.client,
-            #     self.cookie,
-            #     self.data1
-            # )
+            get_history(
+                self.client,
+                self.cookie,
+                self.data1
+            ),
+            semester_code(
+                self.client,
+                self.cookie,
+                self.data1
+            )
         )
 async def runner():
     start=time.time()
     m = await Main.create()
-
     await m.main()
     end=time.time()
     tot=end-start
