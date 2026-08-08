@@ -43,8 +43,6 @@ def parse_schedule(html_src):
             }
             schedule["exam_schedule"][current_exam].append(exam_entry)
 
-
-
-
-    with open(ex,"w") as f:
+    ex.parent.mkdir(parents=True, exist_ok=True)
+    with open(ex,"w",encoding="utf-8") as f:
         json.dump(schedule,f,indent=4)
