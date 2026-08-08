@@ -10,6 +10,6 @@ async def validate(client,data):
     return r
 
 async def redirect(client,redirect_url):
-    r=await client.get(redirect_url,follow_redirect=True)
+    r=await client.get(redirect_url,follow_redirects=True)
     print(r.url)
     return r
