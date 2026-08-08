@@ -130,5 +130,6 @@ async def fetching_attendance(html_src, CSRF, client, vtop_engine):
         *(limited_fetch(course) for course in courses)
     )
 
+    INFO.parent.mkdir(parents=True, exist_ok=True)
     with open(INFO, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=4)

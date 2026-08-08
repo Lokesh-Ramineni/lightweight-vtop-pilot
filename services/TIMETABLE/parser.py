@@ -69,8 +69,8 @@ def fetching_timetable(html_src):
         })
 
     add_schedule(data, table_rows)
-
-    with open(info, "w") as f:
+    info.parent.mkdir(parents=True, exist_ok=True)
+    with open(info, "w",encoding="utf-8") as f:
         json.dump(data, f, indent=4)
 
 def add_schedule(data, table_rows):

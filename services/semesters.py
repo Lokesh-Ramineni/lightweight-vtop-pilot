@@ -27,7 +27,8 @@ async def semester_code(client,vtop_engine,data1):
             sem:sem_code
         })
 
-    with open(sem_codes,"w") as f:
+    sem_codes.parent.mkdir(parents=True, exist_ok=True)
+    with open(sem_codes,"w",encoding="utf-8") as f:
         json.dump(data,f,indent=4)
         print("success")
         
