@@ -35,3 +35,4 @@ MARKS_INFO="/vtop/examinations/doStudentMarkView"
 
 GRADES_INFO="/vtop/examinations/examGradeView/doStudentGradeView"
 GRADES_DETAILS="/vtop/examinations/examGradeView/getGradeViewDetails"
+GRADE_HISTORY="/vtop/examinations/examGradeView/StudentGradeHistory"
