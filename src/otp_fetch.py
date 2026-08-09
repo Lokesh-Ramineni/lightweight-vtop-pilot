@@ -7,6 +7,7 @@ import time
 from pathlib import Path
 import time
 from dotenv import load_dotenv
+from datetime import datetime, timedelta
 
 # ---------------------------------------------------------
 # Load .env
@@ -60,10 +61,15 @@ class OTPFetcher:
 
             self.mail.select("INBOX")
 
-            status, data = self.mail.search(
-                None,
-                f'(FROM "{FROM_EMAIL}")'
-            )
+
+            date_str = (datetime.now() - timedelta(minutes=5)).strftime("%d-%b-%Y")
+            print(date_str)
+            status, data =self.mail.search(None, f'(FROM "{FROM_EMAIL}" SINCE "{date_str}")')
+            #  (
+            #     self.mail.search(
+            #     None,
+            #     f'(FROM "{FROM_EMAIL}")'
+            # ))
 
             if status != "OK":
                 time.sleep(poll_interval)
