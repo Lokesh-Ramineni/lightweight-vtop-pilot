@@ -19,6 +19,8 @@ import time
 import httpx
 import json
 from bs4 import BeautifulSoup
+import logging
+from logging_config import setup_logging
 
 env_path = Path.cwd() / "config" / ".env"
 load_dotenv(env_path)
@@ -35,6 +37,15 @@ with open(sem_codes, "r") as f:
 with open(details,"r") as f:
     d=json.load(f)
 
+
+
+setup_logging()
+
+logger = logging.getLogger(__name__)
+
+logger.info("Application starting")
+
+# Your existing application code...
 class Main:
 
     def __init__(self):
@@ -66,7 +77,10 @@ class Main:
         self = cls()
 
         bot = VtopClient()
-        self.client, self.csrf, self.cookie = await bot.run_flow()
+        try:
+            self.client, self.csrf, self.cookie = await bot.run_flow()
+        except Exception as e:
+            print(e)
 
         flat_map = {}
         for item in s:
@@ -138,7 +152,7 @@ class Main:
 
     async def main(self):
 
-
+        logger.info("passing all the request")
         await asyncio.gather(
             time_table(
                 self.client,
