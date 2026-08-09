@@ -1,6 +1,7 @@
 import json
 import os
 import asyncio
+import aiofiles
 from pathlib import Path
 from dotenv import load_dotenv
 import httpx
@@ -43,7 +44,9 @@ class VtopClient:
         session_check = False
 
         # Trying to open initial page and get the csrf_token
-        load_cookie = json.loads(open(session).read())
+        async with aiofiles.open(session, "r") as f:
+            content = await f.read()
+            load_cookie = json.loads(content)
         cookie = load_cookie["JSESSIONID"]
         try:
 
@@ -144,7 +147,7 @@ class VtopClient:
                     # with open(cache / "captcha.html", "wb") as f:
                     #     f.write(next_page.content)
                     # print(next_page.status_code)
-                    return client, get_csrf_token(next_page.text),
+                    return client, get_csrf_token(next_page.text),cookie
 
                 if ses:
                     save(client.cookies)
