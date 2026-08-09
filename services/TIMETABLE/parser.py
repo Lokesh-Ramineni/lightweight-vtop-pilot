@@ -1,80 +1,98 @@
 from bs4 import BeautifulSoup
 import json
+import logging
 from pathlib import Path
 
 ROOT = Path(__file__).parent.parent.parent
 info = ROOT / "config" / "info.json"
 
-
+logger = logging.getLogger(__name__)
 def fetching_timetable(html_src):
+    logger.info("Starting timetable parsing")
     data = []
+    try:
+        soup = BeautifulSoup(html_src, "lxml")
 
-    soup = BeautifulSoup(html_src, "lxml")
+        table = soup.find("table", class_="table")
+        table_time = soup.find("table", id="timeTableStyle")
 
-    table = soup.find("table", class_="table")
-    table_time = soup.find("table", id="timeTableStyle")
+        if table is None or table_time is None:
+            logger.warning(
+                "Timetable tables not found | main_table=%s | time_table=%s",
+                table is not None,
+                table_time is not None,
+            )
+            return
 
-    if table is None or table_time is None:
-        print("Table not found")
-        return
+        table_rows = table_time.find_all("tr")
+        trs = table.find_all("tr")
 
-    table_rows = table_time.find_all("tr")
+        for tr in trs[2:-2]:
 
-    trs = table.find_all("tr")
+            td = tr.find_all("td")
 
-    for tr in trs[2:-2]:
+            course_text = td[2].find_all("p")[0].get_text(strip=True)
+            course_id, course_name = map(
+                str.strip,
+                course_text.split(" - ", 1)
+            )
 
-        td = tr.find_all("td")
+            course_type = (
+                td[2]
+                .find_all("p")[1]
+                .get_text(strip=True)
+                .strip("()")
+                .strip()
+            )
 
-        course_text = td[2].find_all("p")[0].get_text(strip=True)
-        course_id, course_name = map(
-            str.strip,
-            course_text.split(" - ", 1)
+            slot = (
+                td[7]
+                .find_all("p")[0]
+                .get_text(strip=True)
+                .replace("-", "")
+                .strip()
+            )
+
+            room = td[7].find_all("p")[1].get_text(strip=True)
+
+            faculty = (
+                td[8]
+                .find_all("p")[0]
+                .get_text(strip=True)
+                .replace("-", "")
+                .strip()
+            )
+
+            data.append({
+                "course_id": course_id,
+                "course_name": course_name,
+                "course_type": course_type,
+                "slot": slot,
+                "room": room,
+                "faculty": faculty,
+                "schedule": []
+            })
+        logger.info(
+            "Courses extracted from timetable | count=%d",
+            len(data),
         )
-
-        course_type = (
-            td[2]
-            .find_all("p")[1]
-            .get_text(strip=True)
-            .strip("()")
-            .strip()
-        )
-
-        slot = (
-            td[7]
-            .find_all("p")[0]
-            .get_text(strip=True)
-            .replace("-", "")
-            .strip()
-        )
-
-        room = td[7].find_all("p")[1].get_text(strip=True)
-
-        faculty = (
-            td[8]
-            .find_all("p")[0]
-            .get_text(strip=True)
-            .replace("-", "")
-            .strip()
-        )
-
-        data.append({
-            "course_id": course_id,
-            "course_name": course_name,
-            "course_type": course_type,
-            "slot": slot,
-            "room": room,
-            "faculty": faculty,
-            "schedule": []
-        })
-
-    add_schedule(data, table_rows)
-    info.parent.mkdir(parents=True, exist_ok=True)
-    with open(info, "w",encoding="utf-8") as f:
-        json.dump(data, f, indent=4)
+        add_schedule(data, table_rows)
+        logger.info("Course schedules added successfully")
+        info.parent.mkdir(parents=True, exist_ok=True)
+        with open(info, "w",encoding="utf-8") as f:
+            json.dump(data, f, indent=4)
+        logger.info("Timetable saved successfully")
+    except Exception:
+        logger.exception("Failed to process timetable")
+        raise
 
 def add_schedule(data, table_rows):
 
+    logger.info(
+        "Starting schedule processing | courses=%d",
+        len(data),
+    )
+    schedule_count = 0
     theory_start = [
         td.get_text(strip=True)
         for td in table_rows[0].find_all("td")[2:]
@@ -139,11 +157,8 @@ def add_schedule(data, table_rows):
                             "start": start_times[col],
                             "end": end_times[col]
                         })
-
-
-# if __name__ == "__main__":
-
-#     with open("timetable.html", encoding="utf-8") as f:
-#         html = f.read()
-
-#     fetching_timetable(html)
+                        schedule_count += 1
+    logger.info(
+        "Schedule processing completed | schedules=%d",
+        schedule_count,
+    )
