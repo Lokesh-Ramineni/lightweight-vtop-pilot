@@ -24,3 +24,6 @@ data/cache/*
 
 # IDE settings
 .idea/
+
+#Logging
+logs/app.log
