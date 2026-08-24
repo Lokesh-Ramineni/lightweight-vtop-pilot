@@ -45,7 +45,7 @@ logger = logging.getLogger(__name__)
 
 logger.info("Application starting")
 
-# Your existing application code...
+
 class Main:
 
     def __init__(self):
@@ -144,7 +144,7 @@ class Main:
         }
         self.data5={
             "_csrf": self.csrf,
-            "fromDate": '01/08/2026',
+            "fromDate": '21/08/2026',
             "authorizedID": str(self.username),
             "x": formatdate(timeval=None, localtime=False, usegmt=True)
         }
@@ -152,7 +152,7 @@ class Main:
 
     async def main(self):
 
-        logger.info("passing all the request")
+        # logger.info("passing all the request")
         await asyncio.gather(
             time_table(
                 self.client,
