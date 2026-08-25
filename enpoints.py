@@ -9,6 +9,7 @@ HEADERS = {
 VTOP_BASE_URL="https://vtop.vitap.ac.in/"
 OPEN_PAGE="/vtop/open/page"
 PRE_LOGIN="/vtop/prelogin/setup"
+ERROR="https://vtop.vitap.ac.in/vtop/login/error"
 
 POST_PRE_LOGIN="/vtop/login"
 
