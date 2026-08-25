@@ -7,10 +7,13 @@ bio=ROOT_DIR/"config"/"biometric.json"
 def fetch_bio(html_src):
     soup=BeautifulSoup(html_src,"lxml")
     table=soup.find("table")
+    data=[]
     if not table:
         print("No data found")
+        with open(bio, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=4)
         return
-    data=[]
+    
     total_entries=table.find_all('tr')[-1].find_all("td")[0].get_text(strip=True)
     data.append({
         "total_entries":total_entries

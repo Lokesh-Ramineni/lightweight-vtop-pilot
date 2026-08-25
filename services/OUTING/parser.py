@@ -1,2 +1,2 @@
-def check_outing(html_src);
+# def check_outing(html_src);
     
