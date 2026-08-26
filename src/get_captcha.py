@@ -2,7 +2,7 @@ import base64
 import re
 from pathlib import Path
 from enpoints import POST_PRE_LOGIN
-
+from src.solve_cap import solve_captcha
 ROOT_DIR = Path(__file__).resolve().parent.parent
 
 CAPTCHA_FOLDER = ROOT_DIR / "captcha"
@@ -28,9 +28,10 @@ async def get_captcha(html_src, client):
                 print("Image found successfully!")
                 break
 
+    text=solve_captcha(match.group(1))
 
     decoded = base64.b64decode(match.group(1))
     with open(captcha_dir, "wb") as f:
         f.write(decoded)
 
-    return client, curr_html
+    return client, curr_html,text

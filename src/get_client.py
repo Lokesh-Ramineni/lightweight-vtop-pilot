@@ -43,7 +43,7 @@ JEltkYnTAH41QJ6SAWO66GrrUESwN/cgZzL4JLEqz1Y=
 ssl_context = ssl.create_default_context()
 ssl_context.load_verify_locations(cadata=sectigo_public)
 
-def get_client():
+def get_client() -> httpx.AsyncClient:
     
     client = httpx.AsyncClient(base_url=VTOP_BASE_URL,headers=HEADERS,follow_redirects=True,verify=ssl_context)
     return client
