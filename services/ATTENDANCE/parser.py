@@ -12,14 +12,14 @@ INFO = ROOT / "config" / "attendance.json"
 URL = "https://vtop.vitap.ac.in/vtop/processViewAttendanceDetail"
 
 
-async def fetch_course(client, cookies, csrf, course):
+async def fetch_course(client, cookies, csrf, course,username):
     post_data = {
         "_csrf": csrf,
         "semesterSubId": course["semester_id"],
         "registerNumber": course["reg_no"],
         "courseId": course["course_id_arg"],
         "courseType": course["course_type_arg"],
-        "authorizedID": "<removed>",  
+        "authorizedID": username,  
         "x": formatdate(usegmt=True),
     }
 
@@ -61,7 +61,7 @@ async def fetch_course(client, cookies, csrf, course):
     return course
 
 
-async def fetching_attendance(html_src, CSRF, client, vtop_engine):
+async def fetching_attendance(html_src, CSRF, client, vtop_engine,username):
     soup = BeautifulSoup(html_src, "lxml")
 
     table = soup.find("table", id="AttendanceDetailDataTable")
@@ -124,6 +124,7 @@ async def fetching_attendance(html_src, CSRF, client, vtop_engine):
                 cookies,
                 CSRF,
                 course,
+                username
             )
 
     data = await asyncio.gather(
