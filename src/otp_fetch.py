@@ -1,4 +1,3 @@
-
 import email
 import imaplib
 import os
@@ -9,6 +8,8 @@ import time
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
 
+import logging
+
 # ---------------------------------------------------------
 # Load .env
 # ---------------------------------------------------------
@@ -17,6 +18,8 @@ ROOT_DIR = Path(__file__).resolve().parent.parent
 ENV_PATH = ROOT_DIR / "config" / ".env"
 
 load_dotenv(ENV_PATH)
+
+logger = logging.getLogger(__name__)
 
 EMAIL = os.getenv("EMAIL")
 APP_PASSWORD = os.getenv("APP_PASSWORD")
@@ -44,7 +47,6 @@ class OTPFetcher:
             self.mail.select("INBOX")
 
         except imaplib.IMAP4.error as e:
-            print(APP_PASSWORD,EMAIL)
             raise RuntimeError(f"Failed to login to Gmail: {e}")
 
     def __enter__(self):
@@ -63,7 +65,7 @@ class OTPFetcher:
 
 
             date_str = (datetime.now() - timedelta(minutes=5)).strftime("%d-%b-%Y")
-            print(date_str)
+            logger.info("Current date process tracked: %s", date_str)
             status, data =self.mail.search(None, f'(FROM "{FROM_EMAIL}" SINCE "{date_str}")')
             #  (
             #     self.mail.search(
@@ -130,9 +132,9 @@ class OTPFetcher:
             otp = re.search(r"\b(\d{6})\b", body)
 
             if otp:
-                print("OTP Found.")
+                logger.info("OTP Found.")
                 end=time.time()
-                print(f'{end-start:.2f} seconds')
+                logger.info(f'{end-start:.2f} seconds')
                 return otp.group(1)
 
             time.sleep(poll_interval)
