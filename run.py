@@ -164,7 +164,8 @@ class Main:
                 self.client,
                 self.cookie,
                 self.data1,
-                self.data2
+                self.data2,
+                self.username
             ),
             get_details(
                 self.client,
