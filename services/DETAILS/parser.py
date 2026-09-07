@@ -1,11 +1,14 @@
-from bs4 import BeautifulSoup
-from pathlib import Path
 import json
+from pathlib import Path
+from bs4 import BeautifulSoup
+
 ROOT_DIR=Path(__file__).resolve().parent.parent.parent
 student_info=ROOT_DIR/"config"/"student_info.json"
+
 def parse_details(html_src):
     soup=BeautifulSoup(html_src,"lxml")
     table=soup.find_all("table")
+    
     #Student Details
     rows_1=table[0].find_all("tr")
     rows_2=table[4].find_all("tr")
