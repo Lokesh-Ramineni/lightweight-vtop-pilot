@@ -2,6 +2,9 @@ import httpx
 import ssl
 from enpoints import VTOP_BASE_URL,HEADERS
 
+import logging
+logger = logging.getLogger(__name__)
+
 sectigo_public="""-----BEGIN CERTIFICATE-----
 MIIGTDCCBDSgAwIBAgIQOXpmzCdWNi4NqofKbqvjsTANBgkqhkiG9w0BAQwFADBf
 MQswCQYDVQQGEwJHQjEYMBYGA1UEChMPU2VjdGlnbyBMaW1pdGVkMTYwNAYDVQQD
@@ -43,7 +46,27 @@ JEltkYnTAH41QJ6SAWO66GrrUESwN/cgZzL4JLEqz1Y=
 ssl_context = ssl.create_default_context()
 ssl_context.load_verify_locations(cadata=sectigo_public)
 
-def get_client() -> httpx.AsyncClient:
+async def get_client() -> httpx.AsyncClient:
+    client = None 
     
-    client = httpx.AsyncClient(base_url=VTOP_BASE_URL,headers=HEADERS,follow_redirects=True,verify=ssl_context)
+    try:
+        client = httpx.AsyncClient(
+            base_url=VTOP_BASE_URL, 
+            headers=HEADERS, 
+            follow_redirects=True
+        )
+        await client.get("/") 
+        
+    except httpx.ConnectError as e:
+        logger.error(f"[SSL: CERTIFICATE_VERIFY_FAILED] : {e}")
+        logger.info("Falling back without TLS certificate verification")
+        if client:
+            await client.aclose()
+        client = httpx.AsyncClient(
+            base_url=VTOP_BASE_URL, 
+            headers=HEADERS, 
+            follow_redirects=True, 
+            verify=False
+        )
+        
     return client
