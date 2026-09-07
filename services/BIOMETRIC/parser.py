@@ -1,15 +1,21 @@
-from bs4 import BeautifulSoup
-from pathlib import Path
 import json
+import logging
+from pathlib import Path
+from bs4 import BeautifulSoup
 
 ROOT_DIR=Path(__file__).resolve().parent.parent.parent
 bio=ROOT_DIR/"config"/"biometric.json"
+
+logger = logging.getLogger(__name__)
+
 def fetch_bio(html_src):
     soup=BeautifulSoup(html_src,"lxml")
     table=soup.find("table")
     data=[]
+    bio.parent.mkdir(parents=True, exist_ok=True)
+
     if not table:
-        print("No data found")
+        logger.error("No data found")
         with open(bio, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=4)
         return
@@ -27,7 +33,5 @@ def fetch_bio(html_src):
             "venu":venu
         })
 
-    bio.parent.mkdir(parents=True, exist_ok=True)
-    
     with open(bio, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=4)
