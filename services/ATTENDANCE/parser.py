@@ -2,7 +2,7 @@ import asyncio
 import json
 from email.utils import formatdate
 from pathlib import Path
-
+from src.session import build_cookies
 import httpx
 from bs4 import BeautifulSoup
 
@@ -12,7 +12,7 @@ INFO = ROOT / "config" / "attendance.json"
 URL = "https://vtop.vitap.ac.in/vtop/processViewAttendanceDetail"
 
 
-async def fetch_course(client, cookies, csrf, course,username):
+async def fetch_course(client, vtop_engine, csrf, course,username):
     post_data = {
         "_csrf": csrf,
         "semesterSubId": course["semester_id"],
@@ -24,7 +24,7 @@ async def fetch_course(client, cookies, csrf, course,username):
     }
 
     try:
-        res = await client.post(URL, data=post_data, cookies=cookies)
+        res = await client.post(URL, data=post_data, cookies=build_cookies(vtop_engine))
         res.raise_for_status()
     except Exception as e:
         print(f"Failed to fetch {course['course_id']}: {e}")
@@ -70,8 +70,6 @@ async def fetching_attendance(html_src, CSRF, client, vtop_engine,username):
         print("Attendance table not found.")
         return
 
-    cookies = httpx.Cookies()
-    cookies.set("JSESSIONID", vtop_engine)
 
     courses = []
 
@@ -121,7 +119,7 @@ async def fetching_attendance(html_src, CSRF, client, vtop_engine,username):
         async with semaphore:
             return await fetch_course(
                 client,
-                cookies,
+                vtop_engine,
                 CSRF,
                 course,
                 username
