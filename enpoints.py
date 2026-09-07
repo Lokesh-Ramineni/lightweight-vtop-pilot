@@ -23,6 +23,7 @@ PROCESS_TABLE="/vtop/processViewTimeTable"
 
 ATTENDANCE_PRE="/vtop/academics/common/StudentAttendance"
 PROCESS_ATTENDANCE="/vtop/processViewStudentAttendance"
+ATTENDANCE_DETAIL="/vtop/processViewAttendanceDetail"
 
 OUTING="vtop/hostel/saveOutingForm"
 
