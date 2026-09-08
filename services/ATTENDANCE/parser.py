@@ -1,16 +1,16 @@
-import asyncio
 import json
-from email.utils import formatdate
+import asyncio
+import logging
 from pathlib import Path
-from src.session import build_cookies
-import httpx
 from bs4 import BeautifulSoup
+from email.utils import formatdate
+from src.session import build_cookies
+from enpoints import ATTENDANCE_DETAIL
 
 ROOT = Path(__file__).parent.parent.parent
 INFO = ROOT / "config" / "attendance.json"
 
-URL = "https://vtop.vitap.ac.in/vtop/processViewAttendanceDetail"
-
+logger = logging.getLogger(__name__)
 
 async def fetch_course(client, vtop_engine, csrf, course,username):
     post_data = {
@@ -24,10 +24,10 @@ async def fetch_course(client, vtop_engine, csrf, course,username):
     }
 
     try:
-        res = await client.post(URL, data=post_data, cookies=build_cookies(vtop_engine))
+        res = await client.post(ATTENDANCE_DETAIL, data=post_data, cookies=build_cookies(vtop_engine))
         res.raise_for_status()
     except Exception as e:
-        print(f"Failed to fetch {course['course_id']}: {e}")
+        logger.error(f"Failed to fetch {course['course_id']}: {e}")
         course["attended_list"] = []
         return course
 
@@ -49,7 +49,7 @@ async def fetch_course(client, vtop_engine, csrf, course,username):
                 "Remarks": td[5].get_text(strip=True),
             })
     else:
-        print(f"Attendance table not found for {course['course_id']}")
+        logger.error(f"Attendance table not found for {course['course_id']}")
 
     course["attended_list"] = attended_list
 
@@ -67,7 +67,7 @@ async def fetching_attendance(html_src, CSRF, client, vtop_engine,username):
     table = soup.find("table", id="AttendanceDetailDataTable")
 
     if table is None:
-        print("Attendance table not found.")
+        logger.error("Attendance table not found.")
         return
 
 
