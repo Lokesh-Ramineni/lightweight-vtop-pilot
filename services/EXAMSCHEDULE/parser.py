@@ -51,3 +51,4 @@ def parse_schedule(html_src):
     ex.parent.mkdir(parents=True, exist_ok=True)
     with open(ex,"w",encoding="utf-8") as f:
         json.dump(schedule,f,indent=4)
+    logger.info("Exam Schedule saved successfully")
