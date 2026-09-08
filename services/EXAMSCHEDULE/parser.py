@@ -11,12 +11,13 @@ def parse_schedule(html_src):
     soup=BeautifulSoup(html_src,"lxml")
     table = soup.find("table", class_="customTable")
     if table is None:
-        logger.error("Table not found.No data yet")
+        logger.error("Table not found. No data yet")
         return
     schedule={
         "exam_schedule":{}
     }
     current_exam=None
+    logger.info("Starting table parsing")
     for row in table.find_all("tr"):
         panel_head=row.find('td',class_="panelHead-secondary")
         if panel_head:
@@ -46,7 +47,7 @@ def parse_schedule(html_src):
                 "seat_no": tds[12].get_text(strip=True)
             }
             schedule["exam_schedule"][current_exam].append(exam_entry)
-
+    logger.info("Exam Schedule added successfully")
     ex.parent.mkdir(parents=True, exist_ok=True)
     with open(ex,"w",encoding="utf-8") as f:
         json.dump(schedule,f,indent=4)
