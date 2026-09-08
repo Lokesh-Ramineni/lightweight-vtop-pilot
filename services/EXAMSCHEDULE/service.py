@@ -12,6 +12,7 @@ async def get_schedule(client,vtop_engine,data4):
         logger.info("Requesting Exam Schedule")
         r=await client.post(EXAM_SCHEDULE,cookies=build_cookies(vtop_engine),data=data4)
         r.raise_for_status()
+        
         logger.info("Request Success")
         parse_schedule(r.text)
 
