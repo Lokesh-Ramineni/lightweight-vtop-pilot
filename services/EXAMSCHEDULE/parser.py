@@ -1,13 +1,17 @@
-from bs4 import BeautifulSoup
-from pathlib import Path
 import json
+import logging
+from pathlib import Path
+from bs4 import BeautifulSoup
+
 ROOT_DIR=Path(__file__).parent.parent.parent
 ex=ROOT_DIR/"config"/"exam.json"
+
+logger=logging.getLogger(__name__)
 def parse_schedule(html_src):
     soup=BeautifulSoup(html_src,"lxml")
     table = soup.find("table", class_="customTable")
     if table is None:
-        print("No data yet")
+        logger.error("Table not found.No data yet")
         return
     schedule={
         "exam_schedule":{}
