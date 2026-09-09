@@ -53,9 +53,9 @@ async def get_client() -> httpx.AsyncClient:
         client = httpx.AsyncClient(
             base_url=VTOP_BASE_URL, 
             headers=HEADERS, 
-            follow_redirects=True
+            follow_redirects=True,
+            verify=ssl_context,
         )
-        await client.get("/") 
         
     except httpx.ConnectError as e:
         logger.error(f"[SSL: CERTIFICATE_VERIFY_FAILED] : {e}")
@@ -68,5 +68,5 @@ async def get_client() -> httpx.AsyncClient:
             follow_redirects=True, 
             verify=False
         )
-        
+
     return client
