@@ -77,11 +77,14 @@ class Main:
         self = cls()
 
         bot = VtopClient()
-        try:
-            self.client, self.csrf, self.cookie = await bot.run_flow()
-        except Exception as e:
-            print(e)
+        result = await bot.run_flow()
 
+        if result is None:
+            logger.error("Login failed. Stopping application.")
+            return
+        
+        self.client, self.csrf, self.cookie = result
+        
         flat_map = {}
         for item in s:
             flat_map.update(item)
@@ -208,11 +211,15 @@ class Main:
         )
 async def runner():
     start=time.time()
+
     m = await Main.create()
+
+    if m is None:
+        return
+
     await m.main()
     end=time.time()
-    tot=end-start
-    print(f'{tot:.4f}')
+    print(f"{end - start:.4f}")
 
 
 if __name__ == "__main__":
