@@ -1,8 +1,9 @@
-import httpx
 import ssl
+import httpx
+import logging
 from enpoints import VTOP_BASE_URL,HEADERS
 
-import logging
+
 logger = logging.getLogger(__name__)
 
 sectigo_public="""-----BEGIN CERTIFICATE-----
@@ -55,8 +56,14 @@ async def get_client() -> httpx.AsyncClient:
             headers=HEADERS, 
             follow_redirects=True,
             verify=ssl_context,
+            timeout=httpx.Timeout(
+            connect=15.0,
+            read=30.0,
+            write=30.0,
+            pool=30.0,
+        ),
         )
-        
+
     except httpx.ConnectError as e:
         logger.error(f"[SSL: CERTIFICATE_VERIFY_FAILED] : {e}")
         logger.info("Falling back without TLS certificate verification")
