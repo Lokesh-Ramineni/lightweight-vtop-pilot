@@ -44,7 +44,7 @@ class VtopClient:
         print(f'Flow Initiated...')
 
         
-        client = get_client()
+        client = await get_client()
         session_check = False
 
         for _ in range(0,self.login_tries):
@@ -84,7 +84,7 @@ class VtopClient:
                     request = await client.get(
                         url=OPEN_PAGE)
                     print(f'/open/login Status Code: {request.status_code}')
-
+                    
                     # Fetching csrf_token
                     csrf_token, flag_value = get_csrf(request.text)
 
@@ -115,7 +115,6 @@ class VtopClient:
                             "password": self.password,
                             "captchaStr": text
                         }
-
                         postprelog = await get_post_prelogin(new_client, postlog_data)
                         i+=1
                         if not login_ch(postprelog.text) and postprelog.url != ERROR:
@@ -124,7 +123,7 @@ class VtopClient:
 
                     # Otp Check
                     ses = True
-                    if postprelog.url == ERROR:
+                    if postprelog.url == ERROR and not login_ch(postprelog.text):
                         otp_log = await get_otp_pg(client)
                         logger.info("Otp detected")
                         otp_csrf_token = get_csrf_token(otp_log.text)
@@ -149,17 +148,27 @@ class VtopClient:
                         return client, get_csrf_token(next_page.text),cookie
 
                     if ses:
-                        save(client.cookies)
+                        save(client.cookies) 
                         # with open(cache / "captcha.html", "wb") as f:
                         #     f.write(postprelog.content)
                         return client, get_csrf_token(postprelog.text),cookie
 
-                except Exception as e:
-                    logger.error(f'Failed to login: {e}')
+                except httpx.ConnectTimeout:
+                    logger.error("Connection to VTOP timed out")
+                    return None
+
+                except httpx.HTTPError:
+
+                    logger.error("HTTP error during login")
+                    return client, None, cookie
+
+                except Exception:   
+                    logger.error("Unexpected error during login")
+                    return client, None, cookie
 
                 if html_src is not None:
                     return client, get_csrf_token(html_src),cookie
-                return client, None
+                return client, None,cookie
         return None
 
 async def start():
