@@ -17,7 +17,7 @@ from src.session import cookie_check
 from src.saving_cookies import save
 from src.get_otp import get_otp_pg, validate, redirect
 from checks.prelogin_check import check
-from src.login_check import login_ch
+from src.login_check import login_ch,is_otp_page
 # from checks.content_check import cont_check
 
 from enpoints import OPEN_PAGE,ERROR
@@ -117,13 +117,19 @@ class VtopClient:
                         }
                         postprelog = await get_post_prelogin(new_client, postlog_data)
                         i+=1
-                        if not login_ch(postprelog.text) and postprelog.url != ERROR:
+
+                        logger.info(postprelog.url)
+                        if postprelog.url == ERROR:
+                            logger.info("OTP/error redirect detected; exiting login retry loop")
                             break
 
-
+                        if not login_ch(postprelog.text):
+                            logger.info("Login successful or redirected away from login page")
+                            break
+                    
                     # Otp Check
                     ses = True
-                    if postprelog.url == ERROR and not login_ch(postprelog.text):
+                    if postprelog.url == ERROR or is_otp_page(postprelog.text):
                         otp_log = await get_otp_pg(client)
                         logger.info("Otp detected")
                         otp_csrf_token = get_csrf_token(otp_log.text)
