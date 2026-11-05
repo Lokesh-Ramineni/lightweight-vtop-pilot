@@ -9,7 +9,6 @@ from src.session import build_cookies
 from services.TIMETABLE.parser import fetching_timetable
 
 
-
 ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 timetable_path = ROOT_DIR / "data" / "cache"
 
@@ -25,5 +24,5 @@ async def time_table(client,vtop_engine,data1,data2):
         fetching_timetable(s.text)
     except Exception as e:
         logger.error("Requesting timetable failed",e)
-    # with open(timetable_path/"timetable.html","wb") as f:
-    #     f.write(s.content)
+    with open(timetable_path/"timetable.html","wb") as f:
+        f.write(s.content)
