@@ -16,7 +16,7 @@ from src.prelogin import get_prelogin
 from checks.prelogin_check import check
 from src.get_captcha import get_captcha
 from src.post_prelog import get_post_prelogin
-from src.login_check import login_ch,is_otp_page
+from src.login_check import login_ch,is_otp_page,cap_check
 from src.get_csrf import get_csrf, get_csrf_token
 from src.get_otp import get_otp_pg, validate, redirect
 
@@ -122,7 +122,7 @@ class VtopClient:
                         i+=1
 
                         logger.info(postprelog.url)
-                        if postprelog.url == ERROR:
+                        if postprelog.url == ERROR and not cap_check(postprelog.text):
                             logger.info("OTP/error redirect detected; exiting login retry loop")
                             break
 
