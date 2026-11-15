@@ -5,17 +5,23 @@ def login_ch(html_src):
     heading = soup.find("h4", class_="fw-bold")
     return heading is not None and "VTOP Login" in heading.get_text(strip=True)
 
+
 def cap_check(html_src):
     soup = BeautifulSoup(html_src, "lxml")
-
     alert_span = soup.find("span", attrs={"role": "alert"})
 
     if alert_span:
         strong_tag = alert_span.find("strong")
-
-        if strong_tag.get_text(strip=True)== "Invalid Captcha":
+        if strong_tag and strong_tag.get_text(strip=True) == "Invalid Captcha":
             return True
     return False
+
+
+def alert_text(html_src):
+    """Text of VTOP's alert message (e.g. wrong password), or None."""
+    soup = BeautifulSoup(html_src, "lxml")
+    span = soup.find("span", attrs={"role": "alert"})
+    return span.get_text(" ", strip=True) if span else None
 
 
 def is_otp_page(html_src):
