@@ -7,40 +7,42 @@ from enpoints import VTOP_BASE_URL,HEADERS
 logger = logging.getLogger(__name__)
 
 sectigo_public="""-----BEGIN CERTIFICATE-----
-MIIGTDCCBDSgAwIBAgIQOXpmzCdWNi4NqofKbqvjsTANBgkqhkiG9w0BAQwFADBf
-MQswCQYDVQQGEwJHQjEYMBYGA1UEChMPU2VjdGlnbyBMaW1pdGVkMTYwNAYDVQQD
-Ey1TZWN0aWdvIFB1YmxpYyBTZXJ2ZXIgQXV0aGVudGljYXRpb24gUm9vdCBSNDYw
-HhcNMjEwMzIyMDAwMDAwWhcNMzYwMzIxMjM1OTU5WjBgMQswCQYDVQQGEwJHQjEY
-MBYGA1UEChMPU2VjdGlnbyBMaW1pdGVkMTcwNQYDVQQDEy5TZWN0aWdvIFB1Ymxp
-YyBTZXJ2ZXIgQXV0aGVudGljYXRpb24gQ0EgRFYgUjM2MIIBojANBgkqhkiG9w0B
-AQEFAAOCAY8AMIIBigKCAYEAljZf2HIz7+SPUPQCQObZYcrxLTHYdf1ZtMRe7Yeq
-RPSwygz16qJ9cAWtWNTcuICc++p8Dct7zNGxCpqmEtqifO7NvuB5dEVexXn9RFFH
-12Hm+NtPRQgXIFjx6MSJcNWuVO3XGE57L1mHlcQYj+g4hny90aFh2SCZCDEVkAja
-EMMfYPKuCjHuuF+bzHFb/9gV8P9+ekcHENF2nR1efGWSKwnfG5RawlkaQDpRtZTm
-M64TIsv/r7cyFO4nSjs1jLdXYdz5q3a4L0NoabZfbdxVb+CUEHfB0bpulZQtH1Rv
-38e/lIdP7OTTIlZh6OYL6NhxP8So0/sht/4J9mqIGxRFc0/pC8suja+wcIUna0HB
-pXKfXTKpzgis+zmXDL06ASJf5E4A2/m+Hp6b84sfPAwQ766rI65mh50S0Di9E3Pn
-2WcaJc+PILsBmYpgtmgWTR9eV9otfKRUBfzHUHcVgarub/XluEpRlTtZudU5xbFN
-xx/DgMrXLUAPaI60fZ6wA+PTAgMBAAGjggGBMIIBfTAfBgNVHSMEGDAWgBRWc1hk
-lfmSGrASKgRieaFAFYghSTAdBgNVHQ4EFgQUaMASFhgOr872h6YyV6NGUV3LBycw
-DgYDVR0PAQH/BAQDAgGGMBIGA1UdEwEB/wQIMAYBAf8CAQAwHQYDVR0lBBYwFAYI
-KwYBBQUHAwEGCCsGAQUFBwMCMBsGA1UdIAQUMBIwBgYEVR0gADAIBgZngQwBAgEw
-VAYDVR0fBE0wSzBJoEegRYZDaHR0cDovL2NybC5zZWN0aWdvLmNvbS9TZWN0aWdv
-UHVibGljU2VydmVyQXV0aGVudGljYXRpb25Sb290UjQ2LmNybDCBhAYIKwYBBQUH
-AQEEeDB2ME8GCCsGAQUFBzAChkNodHRwOi8vY3J0LnNlY3RpZ28uY29tL1NlY3Rp
-Z29QdWJsaWNTZXJ2ZXJBdXRoZW50aWNhdGlvblJvb3RSNDYucDdjMCMGCCsGAQUF
-BzABhhdodHRwOi8vb2NzcC5zZWN0aWdvLmNvbTANBgkqhkiG9w0BAQwFAAOCAgEA
-YtOC9Fy+TqECFw40IospI92kLGgoSZGPOSQXMBqmsGWZUQ7rux7cj1du6d9rD6C8
-ze1B2eQjkrGkIL/OF1s7vSmgYVafsRoZd/IHUrkoQvX8FZwUsmPu7amgBfaY3g+d
-q1x0jNGKb6I6Bzdl6LgMD9qxp+3i7GQOnd9J8LFSietY6Z4jUBzVoOoz8iAU84OF
-h2HhAuiPw1ai0VnY38RTI+8kepGWVfGxfBWzwH9uIjeooIeaosVFvE8cmYUB4TSH
-5dUyD0jHct2+8ceKEtIoFU/FfHq/mDaVnvcDCZXtIgitdMFQdMZaVehmObyhRdDD
-4NQCs0gaI9AAgFj4L9QtkARzhQLNyRf87Kln+YU0lgCGr9HLg3rGO8q+Y4ppLsOd
-unQZ6ZxPNGIfOApbPVf5hCe58EZwiWdHIMn9lPP6+F404y8NNugbQixBber+x536
-WrZhFZLjEkhp7fFXf9r32rNPfb74X/U90Bdy4lzp3+X1ukh1BuMxA/EEhDoTOS3l
-7ABvc7BYSQubQ2490OcdkIzUh3ZwDrakMVrbaTxUM2p24N6dB+ns2zptWCva6jzW
-r8IWKIMxzxLPv5Kt3ePKcUdvkBU/smqujSczTzzSjIoR5QqQA6lN1ZRSnuHIWCvh
-JEltkYnTAH41QJ6SAWO66GrrUESwN/cgZzL4JLEqz1Y=
+MIIGkTCCBPmgAwIBAgIQaelsdz55zFOaa2BmSVZ37zANBgkqhkiG9w0BAQsFADBg
+MQswCQYDVQQGEwJHQjEYMBYGA1UEChMPU2VjdGlnbyBMaW1pdGVkMTcwNQYDVQQD
+Ey5TZWN0aWdvIFB1YmxpYyBTZXJ2ZXIgQXV0aGVudGljYXRpb24gQ0EgRFYgUjM2
+MB4XDTI2MTAzMDAwMDAwMFoXDTI3MDUxNjIzNTk1OVowGDEWMBQGA1UEAwwNKi52
+aXRhcC5hYy5pbjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAK03FQKx
+BF0zIGJ2U+P8kyNgIqQOBYAFh9oNy2iZUECbbSSAELQyZFleb6OoHWnZ/lI9ChX/
+0eZMYBQEDnthHP2MvzR/8q8nSHBpfrLnFmO1aqPFm08xvYX5I9b9FY5wn53IaJAB
+DheoBFQ+7gNtvE8mPxjV2LaR4HhaJUJ9iEuOH4BiU2xbOcCJaCdCwwkPGritmApL
+/Q4D7Cl/hUBdTDxIJK4ku+SFKGbObc6WdGXR5FSqGnpdmUl6Rp/KFOkN//3qe7q3
+2W4LrsMDXnfx0StrKxXdlw/te2IPLexzmY8HAnLpUQopPqNQeTF5mf/7/6FNtmdH
+qG3B/655l/QmcMUCAwEAAaOCAw0wggMJMB8GA1UdIwQYMBaAFGjAEhYYDq/O9oem
+MlejRlFdywcnMB0GA1UdDgQWBBTWuXt1qAGstQByYA/y3UDvjjrhOTAOBgNVHQ8B
+Af8EBAMCBaAwDAYDVR0TAQH/BAIwADAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYB
+BQUHAwIwSQYDVR0gBEIwQDA0BgsrBgEEAbIxAQICBzAlMCMGCCsGAQUFBwIBFhdo
+dHRwczovL3NlY3RpZ28uY29tL0NQUzAIBgZngQwBAgEwgYQGCCsGAQUFBwEBBHgw
+djBPBggrBgEFBQcwAoZDaHR0cDovL2NydC5zZWN0aWdvLmNvbS9TZWN0aWdvUHVi
+bGljU2VydmVyQXV0aGVudGljYXRpb25DQURWUjM2LmNydDAjBggrBgEFBQcwAYYX
+aHR0cDovL29jc3Auc2VjdGlnby5jb20wJQYDVR0RBB4wHIINKi52aXRhcC5hYy5p
+boILdml0YXAuYWMuaW4wggGPBgorBgEEAdZ5AgQCBIIBfwSCAXsBeQB+AFlubDOG
+lLJZcqJWyKDo3ZBKdugIPdqHOwEIOCgUPO5ZAAABoYsa75kACAAABQAYCDHrBAMA
+RzBFAiEAz2gv0FHCNljvVg1wGmPeqw9DRICWBG+O77omTc7Orc0CIGGguUujJuoh
+bigvtfRnsNJc8IsUejaM3YBj0GTCkeQNAHcA1tWNqdAXU/NqSqDHV0kCr+vH3CzT
+jNn3ZMgMiRkenwIAAAGhixrv0QAABAMASDBGAiEAg6i+PhtHYjKJqBmvqZI1kl5B
+Sl10ztJ+CtrgarC2jjUCIQCzT8R5k0f0E+o0oPf2tdgUnYtFhASlri/BDm68H5Uw
+VgB+ABqLnWuN15HRzQVJ7bYDVdYGtk+tMNtx/niPD8fI+8SxAAABoYsa840ACAAA
+BQAP5jjuBAMARzBFAiEAzEORemWe2vnsSDy0rwkMa/s8bo5UN/PwPVcqzr4HcwAC
+IDS5oFgEUX3W5fG/SM82k1U97pQG8edKFCY8G7FqXXeqMA0GCSqGSIb3DQEBCwUA
+A4IBgQAO7B2RUrk8GjyK4MvG4xV94/KH3TqJcdeR6xtQJI8KYfT1wP2+PVG8NWxn
+CpJTtUZUOvUE7kfb4e4cpjooH+Qs4UEClSkXRI1nP+/6DwG4NheIkwb1lnEyJbUd
+knKKGEcXX0z2EIhBzZV41MhzwBJuzfsX+5XCn77foF6NEa/85hr1ePm3533d1a91
+4yYe8XzZvjKECnu29AKt6uvZ65KRKicHn5I4K037vMYdPyloPGyPHJZPhblarj6N
+MWbQdkajmq0fCDjZPpiH+xeAF17dilee5qwxwkhZJ+RjxPap071c0XDpvvz3uufB
+flhij7rFwR7uH3TwVgGLfw+pqqPXXTTQctx51d6GgqWmv1PcbJyq3EngWZshaGF9
+Tvsgd04IZnjjBdJvpWyCynVC8R2ugQf5UONY92zqjY8Mj3IEKT62mAJMKTdQ/KPf
+Ojn58Zf/wJKQ3LiavtjfogbiQB87UX+Zj3duwcosG8yE2LIrQH7jLrqyggPNZEkW
+4PesFt4=
 -----END CERTIFICATE-----
 """
 
@@ -48,32 +50,17 @@ ssl_context = ssl.create_default_context()
 ssl_context.load_verify_locations(cadata=sectigo_public)
 
 async def get_client() -> httpx.AsyncClient:
-    client = None 
-    
-    try:
-        client = httpx.AsyncClient(
-            base_url=VTOP_BASE_URL, 
-            headers=HEADERS, 
-            follow_redirects=True,
-            verify=ssl_context,
-            timeout=httpx.Timeout(
+    # Certificate verification is never disabled. A TLS failure must surface
+    # as an error, not fall back to an unverified connection.
+    return httpx.AsyncClient(
+        base_url=VTOP_BASE_URL,
+        headers=HEADERS,
+        follow_redirects=True,
+        verify=ssl_context,
+        timeout=httpx.Timeout(
             connect=15.0,
             read=30.0,
             write=30.0,
             pool=30.0,
         ),
-        )
-
-    except httpx.ConnectError as e:
-        logger.error(f"[SSL: CERTIFICATE_VERIFY_FAILED] : {e}")
-        logger.info("Falling back without TLS certificate verification")
-        if client:
-            await client.aclose()
-        client = httpx.AsyncClient(
-            base_url=VTOP_BASE_URL, 
-            headers=HEADERS, 
-            follow_redirects=True, 
-            verify=False
-        )
-
-    return client
+    )
