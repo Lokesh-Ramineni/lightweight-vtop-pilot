@@ -1,11 +1,9 @@
 from pathlib import Path
-import json
-ROOT_DIR = Path(__file__).parent.parent
-session=ROOT_DIR / "config" / "session.json"
+from src.secure_io import write_private_json
 
-def save(cookie):
-    data={
-        "JSESSIONID":cookie["JSESSIONID"],
-    }
-    with open(session,"w") as f:
-        json.dump(data,f)
+ROOT_DIR = Path(__file__).parent.parent
+session = ROOT_DIR / "config" / "session.json"
+
+
+def save(session_id: str) -> None:
+    write_private_json(session, {"JSESSIONID": session_id})
